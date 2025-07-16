@@ -57,10 +57,7 @@ FULL_SYSTEM/
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- ModelSim/QuestaSim
-- Python 3.7+
-- SystemVerilog compiler
+
 
 ### Running the System
 
@@ -118,27 +115,7 @@ The system includes comprehensive testing for all 15 medical conditions:
 
 This system is for research and educational purposes only. Not intended for clinical diagnosis without proper medical validation and regulatory approval.
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch
-3. Add comprehensive tests
-4. Submit pull request
-
-## 📄 License
-
-This project is part of a graduation thesis. Please contact authors for usage permissions.
-
-## 👥 Authors
-
-- Ahmed Abdullah - Hardware Implementation
-- [Add other team members]
-
-## 🙏 Acknowledgments
-
-- Medical dataset providers
-- FPGA development community
-- Academic supervisors
 
 ---
 
