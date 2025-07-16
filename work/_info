@@ -1,0 +1,125 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/lenovo/Downloads/FULL_SYSTEM
+vaccelerator
+Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z2 !s110 1752475821
+!i10b 1
+!s100 X<QK2CB[8XIn=Z;Ihkz9Y3
+I1Hj@nae@78>iMCQ_lbWBN0
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+!s105 accelerator_sv_unit
+S1
+R0
+w1752250795
+8First_layer/accelerator.sv
+FFirst_layer/accelerator.sv
+L0 1
+Z4 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z5 !s108 1752475821.000000
+!s107 First_layer/accelerator.sv|
+!s90 -reportprogress|300|First_layer/accelerator.sv|
+!i113 1
+Z6 tCvgOpt 0
+vfinal_layer_top
+R1
+Z7 !s110 1752475822
+!i10b 1
+!s100 cW:c`fSjb9ElY]7Pf]fSh2
+IEQEbkc5kOiCFE3;TDcom03
+R3
+!s105 final_layer_top_sv_unit
+S1
+R0
+w1752255627
+8final_layer/final_layer_top.sv
+Ffinal_layer/final_layer_top.sv
+L0 2
+R4
+r1
+!s85 0
+31
+R5
+!s107 final_layer/final_layer_top.sv|
+!s90 -reportprogress|300|final_layer/final_layer_top.sv|
+!i113 1
+R6
+vfull_system_top
+R1
+R7
+!i10b 1
+!s100 dZGGOAUZZGc5PARLz4[;_3
+I63;`zTa_6X4@lPgQD?jE=1
+R3
+!s105 full_system_top_sv_unit
+S1
+R0
+w1752249546
+8FULL_TOP/full_system_top.sv
+FFULL_TOP/full_system_top.sv
+L0 7
+R4
+r1
+!s85 0
+31
+Z8 !s108 1752475822.000000
+!s107 FULL_TOP/full_system_top.sv|
+!s90 -reportprogress|300|FULL_TOP/full_system_top.sv|
+!i113 1
+R6
+vmobilenetv3_top_real_weights
+R1
+R2
+!i10b 1
+!s100 B`^dz0Q^Q8PTU]ld]`fM`2
+Ij0ETdR`Bm2J^So^]CIJHa1
+R3
+!s105 mobilenetv3_top_real_weights_sv_unit
+S1
+R0
+w1752245626
+8BNECK/mobilenetv3_top_real_weights.sv
+FBNECK/mobilenetv3_top_real_weights.sv
+L0 8
+R4
+r1
+!s85 0
+31
+R5
+!s107 BNECK/mobilenetv3_top_real_weights.sv|
+!s90 -reportprogress|300|BNECK/mobilenetv3_top_real_weights.sv|
+!i113 1
+R6
+vtb_single_image_simple
+R1
+R7
+!i10b 1
+!s100 S0@ehY3hQR>EP2EI;ObBn2
+I2Ha=6BK>F6_NXzHiek<BC1
+R3
+!s105 tb_single_image_simple_sv_unit
+S1
+R0
+w1752475280
+8FULL_TOP/tb_single_image_simple.sv
+FFULL_TOP/tb_single_image_simple.sv
+L0 3
+R4
+r1
+!s85 0
+31
+R8
+!s107 FULL_TOP/tb_single_image_simple.sv|
+!s90 -reportprogress|300|FULL_TOP/tb_single_image_simple.sv|
+!i113 1
+R6

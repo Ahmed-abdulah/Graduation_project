@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>X-ray to Memory File Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin: 20px 0; }
+        .preview { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; }
+        .output { margin: 20px 0; }
+        textarea { width: 100%; height: 200px; font-family: monospace; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Medical X-ray to Memory File Converter</h1>
+        
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/*">
+            <p>Select a chest X-ray image (JPG, PNG)</p>
+        </div>
+        
+        <div class="preview">
+            <h3>Preview (224x224 grayscale):</h3>
+            <canvas id="canvas" width="224" height="224"></canvas>
+        </div>
+        
+        <div class="output">
+            <h3>Memory File Output (.mem format):</h3>
+            <textarea id="memOutput" placeholder="Converted memory file content will appear here..."></textarea>
+            <br>
+            <button onclick="downloadMemFile()">Download .mem File</button>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+        
+        <div>
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Upload a chest X-ray image</li>
+                <li>Image will be automatically resized to 224x224 and converted to grayscale</li>
+                <li>Copy the memory file content or download it</li>
+                <li>Save as .mem file (e.g., real_pneumonia_xray.mem)</li>
+                <li>Use in your testbench with $readmemh("filename.mem", test_images[0]);</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const memOutput = document.getElementById('memOutput');
+        
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // Draw image on canvas (224x224, grayscale)
+                        ctx.drawImage(img, 0, 0, 224, 224);
+                        
+                        // Get image data
+                        const imageData = ctx.getImageData(0, 0, 224, 224);
+                        const data = imageData.data;
+                        
+                        // Convert to grayscale and generate memory file
+                        let memContent = '';
+                        for (let i = 0; i < data.length; i += 4) {
+                            // Convert RGB to grayscale
+                            const gray = Math.round(0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2]);
+                            
+                            // Convert 8-bit to 16-bit (multiply by 257)
+                            const value16bit = gray * 257;
+                            
+                            // Convert to hex (4 digits)
+                            const hexValue = value16bit.toString(16).padStart(4, '0');
+                            memContent += hexValue + '\n';
+                        }
+                        
+                        memOutput.value = memContent;
+                        
+                        // Redraw canvas in grayscale for preview
+                        for (let i = 0; i < data.length; i += 4) {
+                            const gray = Math.round(0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2]);
+                            data[i] = gray;     // R
+                            data[i+1] = gray;   // G
+                            data[i+2] = gray;   // B
+                        }
+                        ctx.putImageData(imageData, 0, 0);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function downloadMemFile() {
+            const content = memOutput.value;
+            if (content) {
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'xray_image.mem';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        }
+        
+        function copyToClipboard() {
+            memOutput.select();
+            document.execCommand('copy');
+            alert('Memory file content copied to clipboard!');
+        }
+    </script>
+</body>
+</html>

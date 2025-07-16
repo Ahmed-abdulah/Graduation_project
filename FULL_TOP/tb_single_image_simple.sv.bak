@@ -1,0 +1,178 @@
+`timescale 1ns/1ps
+
+module tb_single_image_simple;
+    // Parameters
+    parameter DATA_WIDTH = 16;
+    parameter FRAC = 8;
+    parameter IN_CHANNELS = 1;
+    parameter FIRST_OUT_CHANNELS = 16;
+    parameter BNECK_OUT_CHANNELS = 16;
+    parameter FINAL_NUM_CLASSES = 15;
+    parameter IMG_SIZE = 224;
+
+    // Disease names
+    string disease_names [0:14] = {
+        "No Finding", "Infiltration", "Atelectasis", "Effusion", "Nodule",
+        "Pneumothorax", "Mass", "Consolidation", "Pleural Thickening", 
+        "Cardiomegaly", "Emphysema", "Fibrosis", "Edema", "Pneumonia", "Hernia"
+    };
+
+    // Clock and reset
+    reg clk = 0;
+    reg rst = 1;
+    always #5 clk = ~clk; // 100MHz
+
+    // DUT signals
+    reg en = 0;
+    reg [DATA_WIDTH-1:0] pixel_in;
+    wire signed [FINAL_NUM_CLASSES*DATA_WIDTH-1:0] class_scores;
+    wire valid_out;
+
+    // Test data - SINGLE IMAGE
+    reg [DATA_WIDTH-1:0] test_image [0:IMG_SIZE*IMG_SIZE-1];
+    integer pixel_count = 0;
+    integer cycle_count = 0;
+
+    // DUT instantiation
+    full_system_top #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .FRAC(FRAC),
+        .IN_CHANNELS(IN_CHANNELS),
+        .FIRST_OUT_CHANNELS(FIRST_OUT_CHANNELS),
+        .BNECK_OUT_CHANNELS(BNECK_OUT_CHANNELS),
+        .FINAL_NUM_CLASSES(FINAL_NUM_CLASSES),
+        .IMG_SIZE(IMG_SIZE)
+    ) dut (
+        .clk(clk),
+        .rst(rst),
+        .en(en),
+        .pixel_in(pixel_in),
+        .class_scores(class_scores),
+        .valid_out(valid_out)
+    );
+
+    // Load single test image
+    initial begin
+        $display("🏥 SINGLE IMAGE NEURAL NETWORK TEST");
+        $display("==================================");
+        
+        // Try to load image file
+        if ($test$plusargs("pneumonia")) begin
+            $readmemh("real_pneumonia_xray.mem", test_image);
+            $display("✅ Loaded: real_pneumonia_xray.mem");
+        end else if ($test$plusargs("normal")) begin
+            $readmemh("real_normal_xray.mem", test_image);
+            $display("✅ Loaded: real_normal_xray.mem");
+        end else if ($test$plusargs("hernia")) begin
+            $readmemh("real_hernia_xray.mem", test_image);
+            $display("✅ Loaded: real_hernia_xray.mem");
+        end else begin
+            // Default: try xray_image.mem
+            $readmemh("xray_image.mem", test_image);
+            $display("✅ Loaded: xray_image.mem (default)");
+        end
+        
+        $display("Image size: 224x224 pixels");
+        $display("Neural network: MobileNetV3 (15 diseases)");
+        $display("");
+    end
+
+    // Main test
+    initial begin
+        // Initialize
+        rst = 1;
+        en = 0;
+        pixel_in = 0;
+        pixel_count = 0;
+        cycle_count = 0;
+
+        // Reset
+        #100;
+        rst = 0;
+        #50;
+
+        $display("🚀 Starting neural network processing...");
+        
+        // Send all pixels
+        en = 1;
+        for (int i = 0; i < IMG_SIZE*IMG_SIZE; i++) begin
+            pixel_in = test_image[i];
+            pixel_count++;
+            @(posedge clk);
+            cycle_count++;
+            
+            // Progress every 10k pixels
+            if (i % 10000 == 0) begin
+                $display("   Processed: %0d/50176 pixels", i);
+            end
+        end
+        
+        $display("✅ All 50176 pixels sent to neural network");
+        en = 0;
+        
+        // Wait for result
+        $display("⏳ Waiting for neural network result...");
+        wait(valid_out);
+        
+        $display("✅ Neural network processing complete!");
+        $display("");
+        
+        // Process results
+        begin
+            automatic logic signed [DATA_WIDTH-1:0] scores [0:FINAL_NUM_CLASSES-1];
+            automatic integer max_class;
+            automatic logic signed [DATA_WIDTH-1:0] max_score;
+            
+            // Extract scores
+            for (int i = 0; i < FINAL_NUM_CLASSES; i++) begin
+                scores[i] = class_scores[i*DATA_WIDTH +: DATA_WIDTH];
+            end
+            
+            // Find maximum
+            max_class = 0;
+            max_score = scores[0];
+            for (int i = 1; i < FINAL_NUM_CLASSES; i++) begin
+                if (scores[i] > max_score) begin
+                    max_score = scores[i];
+                    max_class = i;
+                end
+            end
+            
+            // Display results
+            $display("🎯 NEURAL NETWORK PREDICTION RESULTS");
+            $display("====================================");
+            $display("");
+            
+            // Show all scores
+            $display("📊 ALL DISEASE SCORES:");
+            for (int i = 0; i < FINAL_NUM_CLASSES; i++) begin
+                string marker = (i == max_class) ? " ← PREDICTED" : "";
+                $display("Class %2d (%s): %0d%s", i, disease_names[i], scores[i], marker);
+            end
+            
+            $display("");
+            $display("🏆 FINAL PREDICTION:");
+            $display("   Disease: %s (Class %0d)", disease_names[max_class], max_class);
+            $display("   Confidence Score: %0d", max_score);
+            $display("");
+            
+            $display("⚡ PERFORMANCE:");
+            $display("   Processing time: %0d cycles", cycle_count);
+            $display("   Real-time latency: %.3f ms", cycle_count / 100000.0);
+            $display("   Throughput: %.1f images/second", 100000000.0 / cycle_count);
+            
+            $display("");
+            $display("✅ SINGLE IMAGE TEST COMPLETE");
+        end
+        
+        $finish;
+    end
+
+    // Cycle counter
+    always @(posedge clk) begin
+        if (!rst && en) begin
+            cycle_count <= cycle_count + 1;
+        end
+    end
+
+endmodule
