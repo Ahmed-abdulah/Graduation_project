@@ -27,6 +27,10 @@ This project implements a complete MobileNetV3 neural network in hardware for re
 
 ## 🏗️ Architecture
 
+The architecture is based on MobileNetV3 and optimized for FPGA hardware.
+
+![MobileNetV3 Hardware Architecture](./arch.drawio.png)
+
 ### Hardware Components
 - **First Layer**: Convolution and batch normalization
 - **BNECK Blocks**: Bottleneck layers with real weights
