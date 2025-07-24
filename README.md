@@ -8,23 +8,22 @@ This project implements a complete MobileNetV3 neural network in hardware for re
 
 ## 🔬 Supported Medical Conditions
 
-| Class | Disease | Description |
-|-------|---------|-------------|
-| 0 | Normal | No pathological findings |
-| 1 | Infiltration | Lung tissue inflammation |
-| 2 | Atelectasis | Lung collapse |
-| 3 | Effusion | Fluid in pleural space |
-| 4 | Nodule | Small lung masses |
-| 5 | Pneumothorax | Air in pleural space |
-| 6 | Mass | Large lung masses |
-| 7 | Consolidation | Lung solidification |
-| 8 | Pleural Thickening | Pleural membrane thickening |
-| 9 | Cardiomegaly | Enlarged heart |
-| 10 | Emphysema | Lung tissue damage |
-| 11 | Fibrosis | Lung scarring |
-| 12 | Edema | Fluid accumulation |
-| 13 | Pneumonia | Lung infection |
-| 14 | Hernia | Diaphragmatic hernia |
+| Class | Disease | 
+|-------|---------|
+| 1 | Infiltration | 
+| 2 | Atelectasis | 
+| 3 | Effusion | 
+| 4 | Nodule | 
+| 5 | Pneumothorax | 
+| 6 | Mass | 
+| 7 | Consolidation |
+| 8 | Pleural Thickening | 
+| 9 | Cardiomegaly | 
+| 10 | Emphysema |
+| 11 | Fibrosis | 
+| 12 | Edema |
+| 13 | Pneumonia | 
+| 14 | Hernia | 
 
 ## 🏗️ Architecture
 
