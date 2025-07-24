@@ -73,28 +73,6 @@ FULL_SYSTEM/
 
 This structure ensures clear separation of hardware, software, data, documentation, and results, making the project easy to navigate and maintain.
 
-## 🚀 Quick Start
-
-To get started with the MobileNetV3 Medical X-Ray Classification System:
-
-1. **Compile the hardware design:**
-   ```bash
-   vsim -do FULL_TOP/clean_and_run.do
-   ```
-
-2. **Run comprehensive disease testing:**
-   ```bash
-   vsim -do run_all_diseases_comprehensive.do
-   ```
-
-3. **Analyze classification results:**
-   ```bash
-   python FULL_TOP/analyze_all_diseases_results.py
-   ```
-
-These steps will build the hardware, execute all test cases, and generate analysis reports for medical X-ray classification.
-
-
 ### Running the System
 
 1. **Compile the design:**
