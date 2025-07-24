@@ -57,9 +57,42 @@ FULL_SYSTEM/
 ├── *.py                     # Analysis and testing scripts
 └── README.md               # This file
 ```
+### Folder Structure Explanation
+
+- **src/**: Main source code for analysis, preprocessing, and system control.
+- **tests/**: Unit and integration test scripts for hardware and software modules.
+- **data/**: Medical images, test datasets, and output text files.
+- **models/**: Saved neural network models, weights, and checkpoints.
+- **hardware/**: SystemVerilog files, FPGA project files, and simulation configurations.
+- **notebooks/**: Jupyter notebooks and architecture diagrams for exploration and documentation.
+- **docs/**: Project documentation, presentations, posters, and README.
+- **outputs/**: Generated results, figures, logs, and performance reports.
+- **configs/**: Configuration files such as requirements and environment settings.
+- **scripts/**: Utility scripts for data conversion, setup, and automation.
+- **work/**: Temporary or intermediate files generated during builds or runs.
+
+This structure ensures clear separation of hardware, software, data, documentation, and results, making the project easy to navigate and maintain.
 
 ## 🚀 Quick Start
 
+To get started with the MobileNetV3 Medical X-Ray Classification System:
+
+1. **Compile the hardware design:**
+   ```bash
+   vsim -do FULL_TOP/clean_and_run.do
+   ```
+
+2. **Run comprehensive disease testing:**
+   ```bash
+   vsim -do run_all_diseases_comprehensive.do
+   ```
+
+3. **Analyze classification results:**
+   ```bash
+   python FULL_TOP/analyze_all_diseases_results.py
+   ```
+
+These steps will build the hardware, execute all test cases, and generate analysis reports for medical X-ray classification.
 
 
 ### Running the System
